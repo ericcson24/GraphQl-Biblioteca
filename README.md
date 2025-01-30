@@ -6,6 +6,7 @@ Desarrollar una API en GraphQL que gestione un sistema de préstamos de libros e
 Usuarios: Contiene la información de los usuarios que pueden tomar libros en préstamo.
 Libros: Contiene la información de los libros disponibles en la biblioteca.
 Préstamos: Contiene la información de los libros prestados a los usuarios.
+
 **Resolvers**:
 
 **addUser**
