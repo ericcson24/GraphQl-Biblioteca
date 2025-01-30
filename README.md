@@ -85,7 +85,9 @@ Préstamos: Contiene la información de los libros prestados a los usuarios.
   Devuelve: Los datos actualizados del usuario.
 
 Notas:
-Se debe validar el número de teléfono usando una API externa (por ejemplo, API Ninjas). Si no es válido, la mutación devolverá un error de GraphQL.
+- Se debe validar el número de teléfono usando una API externa (por ejemplo, API Ninjas). Si no es válido, la mutación devolverá un error de GraphQL.
+- Se debe validar el correo usando una API externa (por ejemplo, API Ninjas). Si no es válido, la mutación devolverá un error de GraphQL.
+  
 No se permite más de un usuario con el mismo número de teléfono o correo electrónico. Esto debe validarse con Mongoose.
 No se permite prestar un libro que ya está en préstamo.
 Entrega:
