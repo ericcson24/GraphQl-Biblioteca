@@ -56,7 +56,10 @@ export const resolvers = {
             parent: Prestamos,
             _:unknown,
             context: Context
-        ) => await context.LibroCollection.findOne({ _id: new ObjectId (parent.Libro) })
+        ) => await context.LibroCollection.findOne({ _id: new ObjectId (parent.Libro) }),
+        Fecha_prestamo: (parent:Prestamos) => parent.Fecha_prestamo.toString(),
+        Fecha_devolucion: (parent:Prestamos) => parent.Fecha_devolucion.toString(),
+
 
     },
     
@@ -88,7 +91,7 @@ export const resolvers = {
 
         addUser: async(
             _:unknown,
-            args: Usuario,
+            args: MutationArgsUsuarios,
             context: Context
         ):Promise<Usuario> => {
             const existePaciente = await context.UsuariosCollection.findOne({$or: [
@@ -107,7 +110,7 @@ export const resolvers = {
         },
         addBook: async(
             _:unknown,
-            args: Libro,
+            args: MutationArgsLibros,
             context: Context
         ):Promise<Libro> => {
             const existeLibro = await context.LibroCollection.findOne({
@@ -122,13 +125,15 @@ export const resolvers = {
             })
             return {
                 _id: insertedId,
-                ...args
+                Titulo:args.Titulo,
+                ISBN:args.ISBN,
+                AnioDePublicacion:new Date(args.AnioDePublicacion)
             }
 
         },
         borrowBook: async(
             _:unknown,
-            args: Prestamos,
+            args: MutationArgsPrestamos,
             context: Context
         ):Promise<Prestamos> => {
             
@@ -140,7 +145,10 @@ export const resolvers = {
             })
             return {
                 _id: insertedId,
-                ...args
+                Usuario: args.Usuario,
+                Libro: args.Libro,
+                Fecha_prestamo: new Date(args.Fecha_prestamo),
+                Fecha_devolucion: new Date(args.Fecha_devolucion),
             }
 
         },
@@ -159,11 +167,15 @@ export const resolvers = {
 
         updateUser: async (
             _: unknown, 
-            args: { id: string, nombre?: string, telefono?: string, correo?: string, direccion?: string },
+            args: MutationArgsUsuarios,
             context: Context): Promise<Usuario> => {
-            const objectId = new ObjectId(args.id);
-            const usuarioExistente = await context.UsuariosCollection.findOne({ _id: objectId });
-            if (!usuarioExistente) throw new GraphQLError("No existe el usuario");
+
+            const { id, ...updateArgs } = args 
+            const existePaciente = await context.UsuariosCollection.findOne({$or: [
+                {correo: args.correo},
+                {telefono: args.telefono}
+            ]})
+            if(existePaciente) throw new GraphQLError("El usuario ya existe")
 
             if (args.telefono) {
                 const validacionTelefono = await validar_telefono(args.telefono);
@@ -176,8 +188,8 @@ export const resolvers = {
             
             const updateFields = {...args}
             const result = await context.UsuariosCollection.findOneAndUpdate(
-                { _id: objectId },
-                { $set: updateFields },
+                { _id: new ObjectId(id) },
+                { $set: {...updateArgs} },
                 { returnDocument: "after" }
             );
             if (!result) throw new GraphQLError("Error al actualizar el usuario");
