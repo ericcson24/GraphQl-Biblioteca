@@ -4,12 +4,15 @@ Desarrollar una API en GraphQL que gestione un sistema de préstamos de libros e
 
 **Colecciones**:
 Usuarios: Contiene la información de los usuarios que pueden tomar libros en préstamo.
+
 Libros: Contiene la información de los libros disponibles en la biblioteca.
+
 Préstamos: Contiene la información de los libros prestados a los usuarios.
 
 **Resolvers**:
   
   **addUser**
+  
   Parámetros:
   
   Nombres y apellidos (ej. "Juan Pérez López")
@@ -19,6 +22,7 @@ Préstamos: Contiene la información de los libros prestados a los usuarios.
   Devuelve: El usuario recién creado con su ID.
   
   **addBook**
+  
   Parámetros:
   
   Título del libro (ej. "El Quijote")
@@ -28,6 +32,7 @@ Préstamos: Contiene la información de los libros prestados a los usuarios.
   Devuelve: El libro recién agregado con su ID.
   
   **borrowBook**
+  
   Parámetros:
   
   ID del usuario (generado por MongoDB).
@@ -41,6 +46,7 @@ Préstamos: Contiene la información de los libros prestados a los usuarios.
 
   
   **getUser**
+  
   Parámetro: ID del usuario.
   Devuelve:
   
@@ -49,11 +55,15 @@ Préstamos: Contiene la información de los libros prestados a los usuarios.
   Correo electrónico.
   Dirección.
   Lista de libros prestados con fechas de préstamo y devolución.
+  
   **getBooks**
+  
   Devuelve:
   
   Lista de todos los libros con su título, autor, ISBN y año de publicación.
+  
   **getBorrowedBooks**
+  
   Devuelve:
   
   Lista de libros prestados con la siguiente información:
@@ -61,7 +71,9 @@ Préstamos: Contiene la información de los libros prestados a los usuarios.
   Nombre del usuario que lo tomó en préstamo.
   Fecha de préstamo y devolución.
   Eliminaciones y Actualizaciones
+  
   **deleteBorrow**
+  
   Parámetro: ID del préstamo.
   Devuelve: true o false según si el préstamo se ha eliminado correctamente.
   
