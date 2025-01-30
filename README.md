@@ -1,30 +1,79 @@
 # GraphQl-Biblioteca
+**Objetivo**:
+Desarrollar una API en GraphQL que gestione un sistema de préstamos de libros en una biblioteca.
 
-Objetivo:
-Desarrollar un API en GraphQL que me permita gestionar una agenda de contactos.
+**Colecciones**:
+Usuarios: Contiene la información de los usuarios que pueden tomar libros en préstamo.
+Libros: Contiene la información de los libros disponibles en la biblioteca.
+Préstamos: Contiene la información de los libros prestados a los usuarios.
+**Resolvers**:
 
-Los resolvers deben ser los siguientes
+**addUser**
+Parámetros:
 
-addContact, cuyos parámetros deben ser:
-_Nombres y apellidos, tipo: _"Alberto Romero Sanz"*
-Número de teléfono incluyendo prefijo nacional, tipo: "+34645543345"
-getContact, cuyo parámetro debe ser el id generado por mongo y que devuelve:
+Nombres y apellidos (ej. "Juan Pérez López")
+Número de teléfono con prefijo nacional (ej. "+34645543345")
+Correo electrónico (ej. "juan.perez@example.com")
+Dirección (ej. "Calle Mayor, 10, Madrid, España")
+Devuelve: El usuario recién creado con su ID.
+
+**addBook**
+Parámetros:
+
+Título del libro (ej. "El Quijote")
+Autor (ej. "Miguel de Cervantes")
+ISBN (ej. "978-3-16-148410-0")
+Año de publicación (ej. 1605)
+Devuelve: El libro recién agregado con su ID.
+
+**borrowBook**
+Parámetros:
+
+ID del usuario (generado por MongoDB).
+ID del libro (generado por MongoDB).
+Fecha de préstamo en formato ISO 8601.
+Fecha de devolución en formato ISO 8601.
+Devuelve: La información del préstamo creado, con los datos del usuario y el libro.
+
+**Consultas** (Queries)
+**getUser**
+Parámetro: ID del usuario.
+Devuelve:
+
 Nombres y apellidos.
-Número de teléfono
-País de residencia
-Hora actual de la capital del país de residencia.
-getContacts, que devuelve todos los contactos, con los campos arriba mencionados.
-deleteContact cuyo parámetro debe ser el id generado por mongo y que devuelve verdadero o false en función de si el contacto se ha borrado satisfactoriamente o no.
-updateContact cuyo parámetro debe ser el id generado por mongo y los nuevos datos del contacto, se puede modificar tanto el nombre como el teléfono o ambos (pero no es obligatorio que sean ambos). Devuelve los datos del nuevo contacto.
+Número de teléfono.
+Correo electrónico.
+Dirección.
+Lista de libros prestados con fechas de préstamo y devolución.
+**getBooks**
+Devuelve:
+
+Lista de todos los libros con su título, autor, ISBN y año de publicación.
+**getBorrowedBooks**
+Devuelve:
+
+Lista de libros prestados con la siguiente información:
+Título del libro.
+Nombre del usuario que lo tomó en préstamo.
+Fecha de préstamo y devolución.
+Eliminaciones y Actualizaciones
+**deleteBorrow**
+Parámetro: ID del préstamo.
+Devuelve: true o false según si el préstamo se ha eliminado correctamente.
+
+**updateUser**
+Parámetros:
+
+ID del usuario.
+Nuevos datos (nombre, teléfono, correo electrónico o dirección).
+Devuelve: Los datos actualizados del usuario.
+
 Notas:
-
-Se debe comprobar que el número de teléfono es correcto (a través del uso de una API). Si no es correcto la mutation devolverá un error de GraphQL Se realizará en el lugar del código que sea más oportuno.
-No se permite más de 1 usuario con el mismo teléfono. Esto se debe comprobar a través de mongoose, no en un controller o resolver
-Para obtener la información pertinente se puede usar cualquiera de las APIs disponibles en https://api-ninjas.com/ . Los alumnos pueden consultar libremente esta web.
+Se debe validar el número de teléfono usando una API externa (por ejemplo, API Ninjas). Si no es válido, la mutación devolverá un error de GraphQL.
+No se permite más de un usuario con el mismo número de teléfono o correo electrónico. Esto debe validarse con Mongoose.
+No se permite prestar un libro que ya está en préstamo.
 Entrega:
-Enlace a una release de github
-Archivo comprimido generado en la release
+Enlace a una release de GitHub.
+Archivo comprimido generado en la release.
 Enlace al despliegue de la aplicación en Deno Deploy.
-La falta de los dos primeros elementos supone un 0 en el examen
-
-(La aplicación en Deno Deploy debe ser completamente funcional, guardando los datos en la DDBB correctamente)
+Si falta alguno de los dos primeros elementos, la calificación será 0.
